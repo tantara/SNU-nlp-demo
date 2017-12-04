@@ -46,7 +46,9 @@ Features as follows:
 
 ### with web browser
 
-Browse [http://localhost:5000/](http://localhost:5000)
+Browse [http://localhost:5000/](http://localhost:5000) as follows,
+
+![web demo](https://raw.githubusercontent.com/tantara/SNU-nlp-demo/master/doc/demo.png)
 
 ### with `curl`
 
