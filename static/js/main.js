@@ -31,26 +31,16 @@ $(document).ready(function() {
       var text = e.target.value;
       if(text !== undefined && text.length > 0) {
         $(e.target).parent().addClass('is-loading');
-        $(e.target).prop("disabled", true);
+        // $(e.target).prop("disabled", true);
 
         predict(text, function() {
           $(e.target).parent().removeClass('is-loading');
-          $(e.target).prop("disabled", false);
+          // $(e.target).prop("disabled", false);
           $(e.target).val('');
         })
       }
     }
   });
-
-  var samples = [
-    "I am happy.",
-    "The room was kind of clean but had a VERY strong smell of dogs.",
-    "All in all, poor service, minimal amenities, small rooms, small bathrooms, no view, but great location.",
-    "It is clean and the staff is very accomodating."
-  ]
-  for(var i = 0; i < samples.length; i++) {
-    predict(samples[i]);
-  }
 });
 
 function predict(text, callback) {

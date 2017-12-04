@@ -33,6 +33,15 @@ def refine(text):
     return txt.lower()
 
 
+def classify(text):
+    text = refine(text)
+
+    labels, _ = classifier.predict(text)
+    sentiment = "happy" if labels[0] == "__label__2" else "not happy"
+
+    return sentiment
+
+
 @app.route("/", methods=['GET'])
 def home():
     return render_template("home.html")
@@ -41,17 +50,27 @@ def home():
 @app.route("/predict", methods=['POST'])
 def predict():
     data = json.loads(request.get_data(as_text=True))
-    text = refine(data['q'])
 
-    labels, _ = classifier.predict(text)
-    sentiment = "happy" if labels[0] == "__label__2" else "not happy"
+    sentiment = classify(data['q'])
 
     socketio.emit("response", { 'text': data['q'], 'sentiment': sentiment }, broadcast=True, namespace=namespace)
+
     return jsonify({ 'sentiment': sentiment })
 
 
 @socketio.on('connect', namespace=namespace)
 def connect():
+    samples = [
+      "I am happy.",
+      "The room was kind of clean but had a VERY strong smell of dogs.",
+      "All in all, poor service, minimal amenities, small rooms, small bathrooms, no view, but great location.",
+      "It is clean and the staff is very accomodating."
+    ]
+    for text in samples:
+        text = refine(text)
+        sentiment = classify(text)
+
+        emit("response", { 'text': text, 'sentiment': sentiment }, namespace=namespace)
     print("connect:", uid)
 
 
