@@ -67,8 +67,8 @@ def connect():
       "It is clean and the staff is very accomodating."
     ]
     for text in samples:
-        text = refine(text)
-        sentiment = classify(text)
+        refined = refine(text)
+        sentiment = classify(refined)
 
         emit("response", { 'text': text, 'sentiment': sentiment }, namespace=namespace)
     print("connect:", uid)
