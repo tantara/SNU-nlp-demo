@@ -6,22 +6,7 @@ $(document).ready(function() {
         $(e.target).parent().addClass('is-loading');
         $(e.target).prop("disabled", true);
 
-        $.ajax({
-          method: "POST",
-          url: "/predict",
-          contentType: "applicaiton/json",
-          dataType: "json",
-          data: JSON.stringify({ q: text })
-        })
-        .done(function(data) {
-          console.log('result:', data.sentiment, text);
-          prepend(text, data.sentiment)
-          $('time.timeago').timeago();
-        })
-        .fail(function(err) {
-          alert(err);
-        })
-        .always(function(res) {
+        predict(text, function() {
           $(e.target).parent().removeClass('is-loading');
           $(e.target).prop("disabled", false);
           $(e.target).val('');
@@ -29,8 +14,39 @@ $(document).ready(function() {
       }
     }
   });
+
+  var samples = [
+    "I am happy.",
+    "The room was kind of clean but had a VERY strong smell of dogs.",
+    "All in all, poor service, minimal amenities, small rooms, small bathrooms, no view, but great location.",
+    "It is clean and the staff is very accomodating."
+  ]
+  for(var i = 0; i < samples.length; i++) {
+    predict(samples[i]);
+  }
   $('time.timeago').timeago();
 });
+
+function predict(text, callback) {
+  $.ajax({
+    method: "POST",
+    url: "/predict",
+    contentType: "applicaiton/json",
+    dataType: "json",
+    data: JSON.stringify({ q: text })
+  })
+  .done(function(data) {
+    console.log('result:', data.sentiment, text);
+    prepend(text, data.sentiment)
+    $('time.timeago').timeago();
+  })
+  .fail(function(err) {
+    alert(err);
+  })
+  .always(function(res) {
+    if(callback) callback();
+  })
+}
 
 function prepend(text, sentiment) {
   var content = $('<div></div>');
