@@ -1,4 +1,31 @@
 $(document).ready(function() {
+  var surl = "http://" + document.domain + ":" + location.port + "/channel";
+  console.log("socket url:", surl);
+  socket = io.connect(surl);
+
+  socket.on('connect', function(msg) {
+    console.log('[socket] connected')
+  });
+
+  socket.on('disconnect', function(msg) {
+    console.log('[socket] disconnected')
+  });
+
+  socket.on('response', function(msg) {
+    console.log('[socket] prepend:', msg.sentiment, msg.text);
+    prepend(msg.text, msg.sentiment);
+  });
+
+  $("form#broadcast").submit(function(event){
+    if($("#input-data").val() == "")
+    {
+      return false;
+    }
+    socket.emit("request", {data: $("#input-data").val()});
+    $("#input-data").val("");
+    return false;
+  });
+
   $('#sentence-form').keypress(function(e) {
     if(e.which == 13) {
       var text = e.target.value;
@@ -24,7 +51,6 @@ $(document).ready(function() {
   for(var i = 0; i < samples.length; i++) {
     predict(samples[i]);
   }
-  $('time.timeago').timeago();
 });
 
 function predict(text, callback) {
@@ -37,7 +63,11 @@ function predict(text, callback) {
   })
   .done(function(data) {
     console.log('result:', data.sentiment, text);
-    prepend(text, data.sentiment)
+    console.log('socket status:', socket.connected);
+    if(!socket.connected) {
+      console.log('[ajax] prepend:', data.sentiment, text);
+      prepend(text, data.sentiment)
+    }
     $('time.timeago').timeago();
   })
   .fail(function(err) {
@@ -69,4 +99,5 @@ function prepend(text, sentiment) {
   content.append($('<hr />'));
 
   $('.history').prepend(content);
+  $('time.timeago').timeago();
 }
