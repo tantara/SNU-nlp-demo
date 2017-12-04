@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 app = Flask(__name__)
 
 import json
@@ -14,15 +14,19 @@ def refine(text):
     return txt.lower()
 
 @app.route("/", methods=['GET'])
-def welcome():
-    return "Welcome to NLP!"
+def home():
+    return render_template("home.html")
 
 @app.route("/predict", methods=['POST'])
 def predict():
-    data = request.json
+    data = json.loads(request.get_data(as_text=True))
     text = refine(data['q'])
 
     labels, _ = classifier.predict(text)
     sentiment = "happy" if labels[0] == "__label__2" else "not happy"
 
     return jsonify({ 'sentiment': sentiment })
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run(host='0.0.0.0', port=5000)

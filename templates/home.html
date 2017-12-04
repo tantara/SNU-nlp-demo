@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="tile is-ancestor">
+  <div class="tile is-vertical is-8">
+    <div class="tile is-parent">
+      <article class="tile is-child">
+        <h1 class="title"> Demo for sentiment analysis </h1>
+        <p class="subtitle"> Final Project for Natural Language Processing at <strong>SNU</strong>! </p>
+        <div class="content">
+          <div class="field">
+            <div id="sentence-form" class="control is-large">
+              <input class="input is-large" type="text" placeholder="Give me sentences">
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+  <div class="tile is-parent">
+    <article class="tile is-child">
+      <div class="content">
+        <p class="title">History</p>
+        <p class="subtitle">With even more content</p>
+        <div class="content history">
+          <div>
+            <img src="/static/img/happy.png" />
+            <h3>
+              123asdfadsfasdfadfasdfasdfasdfasdf asdfasdf asdf asdf asdf adsf asdfsd.
+            </h3>
+            <time class="timeago" datetime="2008-07-17T09:24:17Z"></time>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+{% endblock %}

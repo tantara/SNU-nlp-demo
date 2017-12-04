@@ -56,9 +56,7 @@ Browse [http://localhost:5000/](http://localhost:5000)
 $ curl --request POST \
   --url http://localhost:5000/predict \
   --header 'content-type: application/json' \
-  --data '{
-	"q": "I am very happy"
-}'
+  --data '{ "q": "I am very happy" }'
 ```
 
 *Response*

@@ -1,0 +1,22 @@
+div.happy {
+  border: 1px solid #3273dc;
+}
+div.unhappy {
+  border: 1px solid #3273dc;
+}
+.history img {
+  height: 48px;
+  width: 48px;
+  vertical-align: middle;
+  display: inline;
+}
+.history h3 {
+  display: inline;
+  -ms-word-break: break-all;
+  word-break: break-all;
+}
+.history time {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
